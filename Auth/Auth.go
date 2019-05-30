@@ -1,7 +1,7 @@
 package Auth
 
 import (
-	"github.com/DMEvanCT/CommService/Database"
+	"github.com/DMEvanCT/GoBase/Database"
 	"log"
 )
 
