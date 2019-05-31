@@ -10,6 +10,8 @@ import (
 )
 
 
+
+
 func OpenDB(dbusername, dbpass, serverip string ) (*sql.DB) {
 	db, err := sql.Open("mysql", dbusername + ":" + dbpass +  "@tcp(" + serverip + ")" + "/")
 	if err != nil {
@@ -22,12 +24,12 @@ func OpenDB(dbusername, dbpass, serverip string ) (*sql.DB) {
 
 // Specific for the auth db
 func DatabaseInitAuth() (*sql.DB)  {
-	viper.AddConfigPath("/etc/commservice/")
-	viper.SetConfigName("comconfig")
+	viper.AddConfigPath("/etc/dm/")
+	viper.SetConfigName("GenService")
 	viper.ReadInConfig()
-	dbusername := viper.GetString("authdb.username")
-	dbpass := viper.GetString("authdb.password")
-	serverip := viper.GetString("authdb.dbhost")
+	dbusername := viper.GetString("GenService.username")
+	dbpass := viper.GetString("GenService.password")
+	serverip := viper.GetString("GenService.dbhost")
 	databaseconn := OpenDB(dbusername, dbpass, serverip)
 
 
