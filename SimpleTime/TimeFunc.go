@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-func TimeOut(years, months, days int) string {
+func TimeFuture(years, months, days int) string {
 	t := time.Now()
 	expire := t.AddDate(years, months,days)
 	edate := fmt.Sprintf("%d-%02d-%02d %02d:%02d:%02d",
