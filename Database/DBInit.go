@@ -52,6 +52,9 @@ func DatabaseInitAll(configpath, configname, usernanme, password, host string) (
 }
 
 
+
+
+
 // For use with the DBByEnvFunction
 func DatabaseInitAllHost(configpath, configname, usernanme, password, host string) (*sql.DB)  {
 	viper.AddConfigPath(configpath)
