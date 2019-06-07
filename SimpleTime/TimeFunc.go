@@ -15,3 +15,12 @@ func TimeOut(years, months, days int) string {
 	return edate
 }
 
+func TimeNow(years, months, days int) string {
+	t := time.Now()
+	edate := fmt.Sprintf("%d-%02d-%02d %02d:%02d:%02d",
+		t.Year(), t.Month(), t.Day(),
+		t.Hour(), t.Minute(), t.Second())
+
+	return edate
+}
+
