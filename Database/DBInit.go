@@ -83,7 +83,7 @@ func DBInitSSLHostConfv2(configpath, configname, usernanme, password, host, port
 	serverip := viper.GetString(host)
 	portnum := viper.GetString(port)
 
-	db, err := sql.Open("mysql", dbusername + ":" + dbpass +  "@tcp(" + serverip + ":" + portnum + ")" + "/?ssl-mode=REQUIRED")
+	db, err := sql.Open("mysql", dbusername + ":" + dbpass +  "@tcp(" + serverip + ":" + portnum + ")" + "/fair?ssl-mode=REQUIRED")
 	if err != nil {
 		log.Fatal("Sorry there was a problem connecting to the database with user " + dbusername + " host " + serverip +  " pass " + dbpass + " Please check /etc/commservice/credentials.yaml")
 		log.Fatal(err)
