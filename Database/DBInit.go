@@ -74,7 +74,7 @@ func DatabaseInitAllHost(configpath, configname, usernanme, password, host strin
 
 }
 
-func DBInitSSLHostConf(configpath, configname, usernanme, password, host, port  string) (*sql.DB)  {
+func DBInitSSLHostConfv2(configpath, configname, usernanme, password, host, port  string) (*sql.DB)  {
 	viper.AddConfigPath(configpath)
 	viper.SetConfigName(configname)
 	viper.ReadInConfig()
