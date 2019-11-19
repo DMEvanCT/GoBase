@@ -74,15 +74,16 @@ func DatabaseInitAllHost(configpath, configname, usernanme, password, host strin
 
 }
 
-func DBInitSSLHostConf(configpath, configname, usernanme, password, host string) (*sql.DB)  {
+func DBInitSSLHostConf(configpath, configname, usernanme, password, host, port  string) (*sql.DB)  {
 	viper.AddConfigPath(configpath)
 	viper.SetConfigName(configname)
 	viper.ReadInConfig()
 	dbusername := viper.GetString(usernanme)
 	dbpass := viper.GetString(password)
 	serverip := viper.GetString(host)
+	port := viper.GetString(port)
 
-	db, err := sql.Open("mysql", dbusername + ":" + dbpass +  "@tcp(" + serverip + ")" + "/?ssl-mode=REQUIRED")
+	db, err := sql.Open("mysql", dbusername + ":" + dbpass +  "@tcp(" + serverip + "[ + " + port +  "]" + ")" + "/?ssl-mode=REQUIRED")
 	if err != nil {
 		log.Fatal("Sorry there was a problem connecting to the database with user " + dbusername + " host " + serverip +  " pass " + dbpass + " Please check /etc/commservice/credentials.yaml")
 		log.Fatal(err)
