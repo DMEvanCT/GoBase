@@ -60,7 +60,7 @@ func AuthorizedUser(username, service  string) bool {
 
 	var Authorized int;
 	var Authed bool;
-	db := Database.DatabaseInitAll("/etc/commservice/", "comconfig", "authdb.username", "authdb.password", "authdb.dbhost")
+	db := Database.DatabaseInitAll("/etc/dm/", "GenService", "GenService.username", "GenService.password", "GenService.dbhost")
 	tx, err := db.Begin()
 	if err != nil {
 		log.Fatal(err)
