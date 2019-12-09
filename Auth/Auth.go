@@ -111,7 +111,7 @@ func AuthorizeByEnv(username, service, envfromdb string) bool {
 	}
 
 	defer tx.Rollback()
-	stmt, err := tx.Query("SELECT Authorized, Environment FROM accontrol.vw_authcheck WHERE username = ? and MicroserviceName = ?", username, service)
+	stmt, err := tx.Query("SELECT Authorized, Environment FROM accontrol.vw_authcheck WHERE username = ? and MicroserviceName = ?, and Environment = ?", username, service, envfromdb)
 	if err != nil {
 		log.Fatal("There was a problem looking you up.")
 	}
@@ -120,7 +120,7 @@ func AuthorizeByEnv(username, service, envfromdb string) bool {
 
 
 	for stmt.Next() {
-		err := stmt.Scan(&Authorized, &Environment)
+		err := stmt.Scan(&Authorized)
 		if err != nil {
 			log.Fatal(err)
 		}
