@@ -129,7 +129,6 @@ func AuthorizeByEnv(username, service, envfromdb string) bool {
 
 			return Authed
 		}
-
 		if Authorized == 1  {
 			log.Println("You are Authorized by environment!")
 			authenticated := true
