@@ -101,7 +101,6 @@ func AuthorizedUser(username, service  string) bool {
 
 
 func AuthorizeByEnv(username, service, envfromdb string) bool {
-	var Environment string;
 	var Authorized int;
 	var Authed bool;
 	db := Database.DatabaseInitAll("/etc/dm/", "GenService", "GenService.username", "GenService.password", "GenService.dbhost")
