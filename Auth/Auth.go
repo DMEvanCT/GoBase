@@ -100,10 +100,78 @@ func AuthorizedUser(username, service  string) bool {
 }
 
 
+func AuthorizeByEnv(username, service, envfromdb string) bool {
+	var Environment int;
+	var Authorized int;
+	var Authed bool;
+	db := Database.DatabaseInitAll("/etc/dm/", "GenService", "GenService.username", "GenService.password", "GenService.dbhost")
+	tx, err := db.Begin()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer tx.Rollback()
+	stmt, err := tx.Query("SELECT Authorized, Environment FROM accontrol.vw_authcheck WHERE username = ? and MicroserviceName = ?", username, service)
+	if err != nil {
+		log.Fatal("There was a problem looking you up.")
+	}
+	defer stmt.Close()
+
+
+
+	for stmt.Next() {
+		err := stmt.Scan(&Authorized, &Environment)
+		if err != nil {
+			log.Fatal(err)
+		}
+		if  Environment == 0 {
+			log.Println("You are not Authorized")
+			Authed := false
+
+			return Authed
+		}
+
+		if Environment == 1  {
+			log.Println("You are Authorized by environment!")
+			authenticated := true
+			return authenticated
+		} else {
+			Authed := false
+			return Authed
+		}
+
+	}
+
+	return Authed
+
+}
+
+
+
+
 func AuthorizeAuthenticate(apikey, username, service  string) bool {
 	var AllowUser bool = true
 	Authenticated := AuthenticatedUser(apikey, username)
 	Authorized := AuthorizedUser(username, service)
+
+	if !Authenticated  {
+		AllowUser = false
+		log.Println(username + " " + "was not able to authenticate")
+		return  AllowUser
+	}
+
+	if !Authorized {
+		log.Println(username + " " + "was not authorized for " + service)
+		AllowUser = false
+		return AllowUser
+	}
+	return AllowUser
+}
+
+func AuthorizeAuthenticateWithEnv(apikey, username, service, envbydb  string) bool {
+	var AllowUser bool = true
+	Authenticated := AuthenticatedUser(apikey, username)
+	Authorized := AuthorizeByEnv(username, service, envbydb)
 
 	if !Authenticated  {
 		AllowUser = false
