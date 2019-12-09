@@ -99,7 +99,7 @@ func AuthorizedUser(username, service  string) bool {
 
 }
 
-
+// Used to authorize users to specific environments per service.
 func AuthorizeByEnv(username, service, envfromdb string) bool {
 	var Authorized int;
 	var Authed bool;
