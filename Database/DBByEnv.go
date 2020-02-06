@@ -142,7 +142,7 @@ func GetEnvironmentByHostname(database_name string) string {
 	}
 
 	defer tx.Rollback()
-	stmt, err := tx.Query("SELECT db_env FROM clarity_tools.tbl_database_info where db_name = database_name")
+	stmt, err := tx.Query("SELECT db_env FROM clarity_tools.tbl_database_info where db_name = ?", database_name)
 	if err != nil {
 		log.Fatal("There was a problem up the db.")
 	}
