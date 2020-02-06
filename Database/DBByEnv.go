@@ -132,7 +132,7 @@ func DatabaseDemo() []string {
 
 // Garbage Function that does a really simple thing that is way over complicated
 func GetEnvironmentByHostname(database_name string) string {
-	var Environment string;
+	var db_env string;
 	var EnvironmentName string;
 	db := DatabaseInitAll("/etc/dm/","GenService", "GenService.username", "GenService.password", "GenService.dbhost")
 	//var databaseip string;
@@ -142,18 +142,18 @@ func GetEnvironmentByHostname(database_name string) string {
 	}
 
 	defer tx.Rollback()
-	stmt, err := tx.Query("SELECT Environment FROM clarity_tools.tbl_database_info_test where db_name = database_name")
+	stmt, err := tx.Query("SELECT db_env FROM clarity_tools.tbl_database_info where db_name = database_name")
 	if err != nil {
 		log.Fatal("There was a problem up the db.")
 	}
 	defer stmt.Close()
 
 	for stmt.Next() {
-		err := stmt.Scan(&Environment)
+		err := stmt.Scan(&db_env)
 		if err != nil {
 			log.Fatal(err)
 		}
-		EnvironmentName = Environment
+		EnvironmentName = db_env
 
 	}
 	 return EnvironmentName
