@@ -1,7 +1,10 @@
 package Auth
 
 import (
+	"crypto/md5"
+	"encoding/hex"
 	"github.com/DMEvanCT/GoBase/Database"
+	"github.com/spf13/viper"
 	"log"
 )
 
@@ -9,6 +12,21 @@ type Authenticated struct {
 	Authenticated string
 }
 
+
+// This was taken from STACKOVERFLOW because I'm lazy
+func GetMD5Hash(text string) string {
+	hash := md5.Sum([]byte(text))
+	return hex.EncodeToString(hash[:])
+}
+
+func GetSalt() string {
+	viper.AddConfigPath("/etc/dm/")
+	viper.SetConfigName("GenService")
+	viper.ReadInConfig()
+	salt := viper.GetString("GenService.salt")
+
+	return salt
+}
 
 
 func AuthenticatedUser(akey, username string) (bool) {
@@ -168,7 +186,9 @@ func AuthorizeAuthenticate(apikey, username, service  string) bool {
 
 func AuthorizeAuthenticateWithEnv(apikey, username, service, envbydb  string) bool {
 	var AllowUser bool = true
-	Authenticated := AuthenticatedUser(apikey, username)
+	salt := GetSalt()
+	apikeymd5 := GetMD5Hash(salt + apikey + salt)
+	Authenticated := AuthenticatedUser(apikeymd5, username)
 	Authorized := AuthorizeByEnv(username, service, envbydb)
 
 	if !Authenticated  {
