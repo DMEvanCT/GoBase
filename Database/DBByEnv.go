@@ -15,7 +15,7 @@ func DatabaseByEnvironment(Environment string) (string){
 	}
 
 	defer tx.Rollback()
-	stmt, err := tx.Query("SELECT db_ip FROM clarity_tools.tbl_database_info  WHERE db_env = ?", Environment)
+	stmt, err := tx.Query("SELECT db_ip FROM devops_tools.tbl_database_info  WHERE db_env = ?", Environment)
 	if err != nil {
 		log.Fatal("There was a problem up the db.")
 	}
@@ -26,6 +26,7 @@ func DatabaseByEnvironment(Environment string) (string){
 	for stmt.Next() {
 		err := stmt.Scan(&db_ip)
 		if err != nil {
+			stmt.Close()
 			log.Fatal(err)
 		}
 	}
@@ -45,8 +46,7 @@ func DatabaseAllIP() []string {
 		log.Fatal(err)
 	}
 
-	defer tx.Rollback()
-	stmt, err := tx.Query("SELECT db_ip FROM clarity_tools.tbl_database_info")
+	stmt, err := tx.Query("SELECT db_ip FROM devops_tools.tbl_database_info")
 	if err != nil {
 		log.Fatal("There was a problem up the db.")
 	}
@@ -57,6 +57,7 @@ func DatabaseAllIP() []string {
 	for stmt.Next() {
 		err := stmt.Scan(&db_ip)
 		if err != nil {
+			stmt.Close
 			log.Fatal(err)
 		}
 		databaseip = append(databaseip, db_ip)
@@ -77,8 +78,9 @@ func DatabaseAllHostEnabled() []string {
 	}
 
 	defer tx.Rollback()
-	stmt, err := tx.Query("SELECT db_name FROM clarity_tools.tbl_database_info where Enabled  = 1")
+	stmt, err := tx.Query("SELECT db_name FROM devops_tools.tbl_database_info where Enabled  = 1")
 	if err != nil {
+		stmt.Close()
 		log.Fatal("There was a problem up the db.")
 	}
 	defer stmt.Close()
@@ -109,7 +111,7 @@ func DatabaseDemo() []string {
 	}
 
 	defer tx.Rollback()
-	stmt, err := tx.Query("SELECT db_name FROM clarity_tools.tbl_database_info_test where Enabled = 1")
+	stmt, err := tx.Query("SELECT db_name FROM devops_tools.tbl_database_info_test where Enabled = 1")
 	if err != nil {
 		log.Fatal("There was a problem up the db.")
 	}
@@ -120,6 +122,7 @@ func DatabaseDemo() []string {
 	for stmt.Next() {
 		err := stmt.Scan(&db_ip)
 		if err != nil {
+			stmt.Close()
 			log.Fatal(err)
 		}
 		databaseip = append(databaseip, db_ip)
@@ -142,7 +145,7 @@ func GetEnvironmentByHostname(database_name string) string {
 	}
 
 	defer tx.Rollback()
-	stmt, err := tx.Query("SELECT db_env FROM clarity_tools.tbl_database_info where db_name = ?", database_name)
+	stmt, err := tx.Query("SELECT db_env FROM devops_tools.tbl_database_info where db_name = ?", database_name)
 	if err != nil {
 		log.Fatal("There was a problem up the db.")
 	}
@@ -151,6 +154,7 @@ func GetEnvironmentByHostname(database_name string) string {
 	for stmt.Next() {
 		err := stmt.Scan(&db_env)
 		if err != nil {
+			stmt.Close()
 			log.Fatal(err)
 		}
 		EnvironmentName = db_env
